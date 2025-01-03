@@ -103,6 +103,14 @@ nav > .container {
   gap: 20px;
 }
 
+.loading {
+  text-align: center;
+}
+
+.products:not(:empty) + .loading {
+  display: none;
+}
+
 .product {
   text-align: center;
   position: relative;

@@ -54,7 +54,6 @@ const clearCart = () => {
   cart = [];
   saveCart();
   renderCart();
-  renderProducts();
   setTimeout(hideCart, 500);
 };
 
@@ -64,13 +63,14 @@ const addToCart = (e) => {
     const inCart = cart.find((x) => x.id === id);
 
     if (inCart) {
-      alert("Item is already in cart.");
-      return;
+      // increase the quantity in cart
+      inCart.qty++;
+    } else {
+      // add to the cart
+      cart.push({ id, qty: 1 });
     }
 
-    cart.push({ id, qty: 1 });
     saveCart();
-    renderProducts();
     renderCart();
     showCart();
   }
@@ -81,8 +81,6 @@ const removeFromCart = (id) => {
 
   // if the last item is remove, close the cart
   cart.length === 0 && setTimeout(hideCart, 500);
-
-  renderProducts();
 };
 
 const increaseQty = (id) => {
@@ -180,21 +178,12 @@ const renderProducts = () => {
     .map((product) => {
       const { id, title, image, price } = product;
 
-      // check if product is already in cart
-      const inCart = cart.find((x) => x.id === id);
-
-      // make the add to cart button disabled if already in cart
-      const disabled = inCart ? "disabled" : "";
-
-      // change the text if already in cart
-      const text = inCart ? "Added in Cart" : "Add to Cart";
-
       return `
     <div class="product">
       <img src="${image}" alt="${title}" />
       <h3>${title}</h3>
       <h5>${price.format()}</h5>
-      <button ${disabled} data-id=${id}>${text}</button>
+      <button data-id=${id}>Add to Cart</button>
     </div>
     `;
     })
